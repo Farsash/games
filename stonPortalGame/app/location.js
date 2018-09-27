@@ -8,7 +8,6 @@ FBXloader.load( 'res/models.FBX', function ( object ) {
     scene.add( object );
 } );
 
-
 var animate = function () {
   requestAnimationFrame( animate );
   renderer.render( scene, camera );
