@@ -1,7 +1,7 @@
 FBXloader.load( 'res/models.FBX', function ( object ) {
     object.traverse( function ( child ) {
         if ( child.isMesh ) {
-          child.material = new THREE.MeshBasicMaterial( { map: T_loader.load('res/none.png') } );
+          child.material = materials[child.name];
         }
     } );
     object.scale.set(0.3, 0.3, 0.3);
