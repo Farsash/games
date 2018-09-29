@@ -15,10 +15,11 @@ var Envmat = new THREE.ShaderMaterial({
         void main(){
             vec4 mask = texture2D(mask, vUv);
             vec4 gr = mix(vec4(0.265,0.740,0.324,1.),vec4(0.288,0.315,0.290,1.), mask.r);
+
             gl_FragColor = gr * mask.a;
+
         }
-    `,
-    side:THREE.DoubleSide
+    `
 });
 
 
