@@ -4,17 +4,16 @@ var T_loader = new THREE.TextureLoader();
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 20000 );
-	camera.position.z = -30;
-    camera.position.y = 1000;
-    camera.position.x = 1500;
+    camera.position.set(1500, 1000, -30);
+
 var controls = new THREE.OrbitControls( camera );
+
 var renderer = new THREE.WebGLRenderer();
     renderer.setSize( window.innerWidth, window.innerHeight );
+
 document.body.appendChild( renderer.domElement );
 
-
 window.addEventListener( 'resize', onWindowResize, false );
-
 
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
