@@ -88,14 +88,80 @@ var portal_2mat = new THREE.ShaderMaterial({
         uniform float time;
         void main(){
             vec4 img = texture2D(img, vec2(vUv.x, vUv.y + (sin(time)*0.4)));
-            gl_FragColor = img;
+            if (gl_FrontFacing)  {
+                gl_FragColor = img;
+            } else {
+                gl_FragColor = img * 2.;
+            }
+            
         }
     `,
     transparent:true    
 });
 
+var playermat = new THREE.ShaderMaterial({
+    uniforms: { 
+        img: { type: "t", value: T_loader.load("res/player.png") },
+        time: { type: "f", value: 0.0 },
+        portal: { type: "v3", value: new THREE.Vector3( 0, 0, 20.0 ) } 
+    },
+    vertexShader:`
+        varying vec2 vUv;
+        varying vec3 vPosition;
+        void main(){
+            vUv = uv;
+            vPosition = (modelMatrix*vec4(position, 1.)).xyz;
+            vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+            gl_Position = projectionMatrix * mvPosition;
+        }
+    `,
+    fragmentShader:`
+        varying vec2 vUv;
+        uniform sampler2D img;
+        uniform float time;
+        uniform vec3 portal;
+
+        varying vec3 vPosition;
+
+        void main(){
+            
+            vec4 img = texture2D(img, vUv); // Текстура
+
+            if(vPosition.z > portal.z - 8.5) {
+                discard;
+            }
+
+           if (gl_FrontFacing){          
+
+                if(vPosition.z > portal.z - 10.5) {
+
+                   gl_FragColor = mix(vec4(0.910,0.469,1.000,1.),img, 0.5);
+
+                } else {
+
+                    gl_FragColor = img;
+
+                }
+               
+            }
+
+            else {
+               gl_FragColor = vec4(0.910,0.469,1.000,1.);
+            }
+            
+        }
+    `,
+    side:THREE.DoubleSide,
+    transparent:true
+
+});
+
+
 var materials = {
+    noneMTL: new THREE.MeshBasicMaterial( { color: 0xff0000 } ),
+    player: playermat,
     Env: Envmat,
+    monstr: new THREE.MeshBasicMaterial( { map: T_loader.load("res/monstr.jpg") } ),
     stone:  stonemat,
     portal_1: new THREE.MeshBasicMaterial( { map:T_loader.load("res/portal.png"), transparent: true } ),
     portal_2: portal_2mat
