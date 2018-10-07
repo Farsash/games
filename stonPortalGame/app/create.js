@@ -11,8 +11,8 @@ var T_loader = new THREE.TextureLoader(manager);
 
 var setting = {
     camera: {
-        x: 100,
-        y: 100,
+        x: 350,
+        y: 250,
         z: 0
     },
     player: {
