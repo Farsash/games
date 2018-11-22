@@ -127,13 +127,13 @@ var playermat = new THREE.ShaderMaterial({
             
             vec4 img = texture2D(img, vUv); // Текстура
 
-            if(vPosition.z > portal.z - 8.5) {
+            if( vPosition.z > portal.z - 8.5 && vPosition.z < portal.z + 8.5) {
                 discard;
             }
 
            if (gl_FrontFacing){          
 
-                if(vPosition.z > portal.z - 10.5) {
+                if( vPosition.z > portal.z - 10.5 && vPosition.z < portal.z + 8.5) {
 
                    gl_FragColor = mix(vec4(0.910,0.469,1.000,1.),img, 0.5);
 

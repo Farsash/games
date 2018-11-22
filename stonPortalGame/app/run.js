@@ -1,3 +1,5 @@
+var flagT = true;
+
 var animElement = {
     
     player: {
@@ -9,32 +11,35 @@ var animElement = {
         },
         
         forward: function(){
-            this.obj.translateY(-setting.player.speed);
+            this.obj.translateZ(setting.player.speed);
         },
         
         back: function(){
-            this.obj.translateY(setting.player.speed*0.8)
+            this.obj.translateZ(-setting.player.speed*0.8)
         },
         
         left: function(){
-            this.obj.rotation.z -= setting.player.rotat;
+            this.obj.rotation.y -= setting.player.rotat;
         },
         
         right: function(){
-            this.obj.rotation.z += setting.player.rotat;
+            this.obj.rotation.y += setting.player.rotat;
         },
         
         action: function(){
-            if (this.move.go === true ){
+            
+            if ( this.move.go === true && this.move.collision === false ) {
                 this.forward();
-            } else if (this.move.back === true ) {
+            } else if (this.move.back === true && this.move.collision === false){
                 this.back();
-            }            
-            if (this.move.left === true ) {
+            }
+            
+            if (this.move.left === true){
                 this.left();
-            } else if (this.move.right === true ) {
+            } else if(this.move.right === true){
                 this.right();
             }
+            
         }
     },
     
@@ -47,9 +52,38 @@ var animElement = {
         name.forEach(function( e ) {
             animElement[e] = scene.getObjectByName( e );
         });  
-    },    
+    }, 
+    
+    collisionTimer: 0,
+    
+    collisionDetector: function(){
+        
+        var originPoint = this.player.obj.position.clone();
+
+        for (var vertexIndex = 0; vertexIndex < this.player.obj.geometry.vertices.length; vertexIndex++)
+            {		
+                var localVertex = this.player.obj.geometry.vertices[vertexIndex].clone();
+                var globalVertex = localVertex.applyMatrix4( this.player.obj.matrix );
+                var directionVector = globalVertex.sub( this.player.obj.position );
+                var ray = new THREE.Raycaster( originPoint, localVertex.clone().normalize() );
+                var collisionResults = ray.intersectObjects( collisionObjects );
+                if ( collisionResults.length > 0 && collisionResults[0].distance < 14 ) {
+                    this.player.move.collision = true;
+                    flagT = false;
+                } else {
+                    this.player.move.collision = false;
+                    flagT = true;
+
+                    
+                }
+            }	
+     
+        
+    },
 
     update: function( delta ){ 
+    
+        this.collisionDetector();
         
         this.portal_1.rotation.z += 0.08;
         
@@ -94,10 +128,10 @@ function keyDownHandler(e) {
 }
 
 function keyUpHandler(e) {
-    if(e.keyCode == 87) { // w
+    if(e.keyCode == 87 && flagT === true) { // w
         animElement.player.move.go = false;
     }
-    else if(e.keyCode == 83) { // s 
+    else if(e.keyCode == 83 && flagT === true) { // s 
         animElement.player.move.back = false;    
 
     }
@@ -116,8 +150,13 @@ function keyUpHandler(e) {
 
 manager.onLoad = function () {
     
+    var Player = createPlayer( 'player', );
+    scene.add(Player);
+    
     // Определяем персонажа 
-    animElement.player.obj = scene.getObjectByName( 'player' );
+    animElement.player.obj = Player;
+    
+    
     
     // Определяем местоположение портала
     animElement.portals();
@@ -131,7 +170,8 @@ manager.onLoad = function () {
 
 var animate = function () {
     
-    var delta = clock.getDelta();    
+    var delta = clock.getDelta();  
+    
     requestAnimationFrame( animate );
     
     

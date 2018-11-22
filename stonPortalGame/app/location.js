@@ -17,18 +17,31 @@ var loadObjects = function( name, arrAnimation ){
 
         
         object.traverse( function ( child ) {
+            
             if ( child.isMesh ) {
-                if (materials[child.name]){
-                    child.material = materials[child.name];
-                } else {
-                    // На случай, если забыл задать имя модели
-                    child.material = materials['noneMTL'];
-                }   
                 
-                if ( object.animations ){
-                    // =============== Без этого анимация не будет работать
-                    child.material.skinning = true;
+                
+                
+                if ( child.name.charAt(0) === "_"){
+                    collisionObjects.push(child);
+                    child.layers.mask = 1;
+                    child.material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true, transparent: true } );
+                } else {
+                    
+                    if (materials[child.name]){
+                        child.material = materials[child.name];
+                    } else {
+                        // На случай, если забыл задать имя модели
+                        child.material = materials['noneMTL'];
+                    }   
+
+                    if ( object.animations ){
+                        // =============== Без этого анимация не будет работать
+                        child.material.skinning = true;
+                    }
+                    
                 }
+                
             }
         } );
         
@@ -40,4 +53,32 @@ var loadObjects = function( name, arrAnimation ){
         }
         
     } ); 
+}
+
+var CollisionBox = function( position ){
+    
+    var geometry = new THREE.BoxGeometry( 20, 20, 20 );
+    var material = new THREE.MeshBasicMaterial( { color: 0x00ff00, wireframe: true, transparent: true } )
+    var cube = new THREE.Mesh( geometry, material );
+    cube.layers.mask = 1;
+    cube.position.set( position.x / 2, position.y, position.z / 2 );
+    return cube ;    
+    
+}
+
+
+var createPlayer = function( name ){
+    
+    var player = scene.getObjectByName( 'player' );   
+    
+    var Collision = CollisionBox( player.position );
+    
+    // Костыль
+    player.position.y = player.position.y/10;
+    
+    Collision.add(player);
+    
+    
+    return Collision; 
+    
 }
