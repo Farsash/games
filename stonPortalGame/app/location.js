@@ -1,4 +1,3 @@
-
 var loadObjects = function( name, arrAnimation ){    
     FBXloader.load( setting.models.path + name + '.FBX', function ( object ) {
         

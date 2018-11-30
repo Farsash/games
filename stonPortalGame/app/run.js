@@ -7,61 +7,129 @@ scene.add(line);
 
 var Playclone;
 
-var animElement = {
-    
-    player: {
-        clone: false,
-        move: {
+var player = {
+    clone: false,
+    obj: false,
+    move: {
             go: false,
             back: false,
             left: false,
-            right: false
-        },
-        
-        forward: function(){
+            right: false,
+            collision: false
+    },
+    
+    forward: function(){
             this.obj.translateX(setting.player.speed);
-            if (this.clone === true){
+            if (this.clone){
                 Playclone.translateX(setting.player.speed);
             }
         },
         
-        back: function(){
-            this.obj.translateX(-setting.player.speed*0.8)
-            if (this.clone === true){
-                Playclone.translateX(-setting.player.speed*0.8);
-            }
-        },
-        
-        left: function(){
-            this.obj.rotation.y -= setting.player.rotat;
-            if (this.clone === true){
-                Playclone.rotation.y -= setting.player.rotat;
-            }
-        },
-        
-        right: function(){
-            this.obj.rotation.y += setting.player.rotat;
-            if (this.clone === true){
-                Playclone.rotation.y += setting.player.rotat;
-            }
-        },
-        
-        action: function(){
-            
-            if ( this.move.go === true && this.move.collision === false ) {    
-                this.forward();
-            } else if (this.move.back === true  && this.move.collision === false){
-                this.back();
-            }
-            
-            if (this.move.left === true){
-                this.left();
-            } else if(this.move.right === true){
-                this.right();
-            }
-            
+    back: function(){
+        this.obj.translateX(-setting.player.speed*0.8)
+        if (this.clone){
+            Playclone.translateX(-setting.player.speed*0.8);
         }
     },
+
+    left: function(){
+        this.obj.rotation.y -= setting.player.rotat;
+        if (this.clone){
+            Playclone.rotation.y -= setting.player.rotat;
+        }
+    },
+
+    right: function(){
+        this.obj.rotation.y += setting.player.rotat;
+        if (this.clone){
+            Playclone.rotation.y += setting.player.rotat;
+        }
+    },
+    
+    update: function(){
+
+        if ( this.move.go === true && this.move.collision === false ) {    
+            this.forward();
+        } else if (this.move.back === true  && this.move.collision === false){
+            this.back();
+        }
+
+        if (this.move.left === true){
+            this.left();
+        } else if(this.move.right === true){
+            this.right();
+        }
+        
+        this.Detector();
+
+    },
+    
+    removeClonePlayer: function(){
+        
+        scene.remove(this.obj);
+        
+        this.obj = this.clone;
+        
+        this.clone = false;
+        playermat.uniforms.run.value = 0.0;
+        
+    },
+    
+    Detector: function(){
+        
+        var direction, vec;
+        
+        line.geometry.vertices[0] = this.obj.position
+        
+        if ( this.move.back === true ){
+            direction = new THREE.Vector3( -1000, 0, 0 );
+            vec = new THREE.Vector3( -100, 0, 0 );
+        } else {
+            direction = new THREE.Vector3( 1000, 0, 0 );
+            vec = new THREE.Vector3( 100, 0, 0 );
+        }
+        
+         
+        direction.applyMatrix4( this.obj.matrix );
+        
+        line.geometry.vertices[1] = vec;
+        line.geometry.vertices[1].applyMatrix4( this.obj.matrix );
+        line.geometry.verticesNeedUpdate = true;
+
+        raycaster.set(  this.obj.position,  direction.normalize() );
+
+        var intersects = raycaster.intersectObjects( collisionObjects );
+
+        for ( var i = 0; i < intersects.length; i++ ) { 
+            
+            if ( intersects[ 0 ].distance < 10 ){
+                
+                if ( intersects[ 0 ].object.name === '_portal'){
+                    
+                    if ( this.clone === false ){
+                        
+                        playermat.uniforms.run.value = 1.0;
+                        this.clone = true;
+                        this.clone = CloneElemntFromPortal( this.obj );
+                        scene.add(this.clone);
+                        this.removeClonePlayer();
+                        
+                    }
+                } else {
+                    
+                   this.move.collision = true;    
+                    
+                }               
+            } else {
+                
+                this.move.collision = false;
+                
+            }
+        }  
+    }
+};
+
+var animElement = {
     
     portals: function(){
         playermat.uniforms.portal.value = this.portal_1.position;
@@ -73,80 +141,15 @@ var animElement = {
         name.forEach(function( e ) {
             animElement[e] = scene.getObjectByName( e );
         });  
-    }, 
-        
-    tachDetector: function(){
-        
-        var direction, vec;
-        
-        line.geometry.vertices[0] = this.player.obj.position
-        
-        if ( this.player.move.back === true ){
-            direction = new THREE.Vector3( -1000, 0, 0 );
-            vec = new THREE.Vector3( -100, 0, 0 );
-        } else {
-            direction = new THREE.Vector3( 1000, 0, 0 );
-            vec = new THREE.Vector3( 100, 0, 0 );
-        }
-        
-         
-        direction.applyMatrix4( this.player.obj.matrix );
-        
-        line.geometry.vertices[1] = vec;
-        line.geometry.vertices[1].applyMatrix4( this.player.obj.matrix );
- 
-        line.geometry.verticesNeedUpdate = true;
-        
-
-        raycaster.set(  this.player.obj.position,  direction.normalize() );
-
-        var intersects = raycaster.intersectObjects( collisionObjects );
-
-        for ( var i = 0; i < intersects.length; i++ ) {
-            
-            if ( intersects[ 0 ].distance < 10 ){                
-                
-                if ( intersects[ 0 ].object.name === '_portal'){
-                    
-                    if ( this.player.clone === false ){
-                        
-                        playermat.uniforms.run.value = 1.0;
-                        this.player.clone = true;
-                        CloneElemntFromPortal( this.player.obj );
-                        
-                    }
-                    
-                    
-                } else {
-                    
-                   this.player.move.collision = true;    
-                    
-                }               
-                
-                
-            } else {
-                
-                this.player.move.collision = false;
-                
-            }
-
-        }
-        
-        
-        
     },
 
     update: function( delta ){ 
-    
-        //this.collisionDetector();
-        
-        this.tachDetector();
         
         this.portal_1.rotation.z += 0.08;
         
         portal_2mat.uniforms.time.value += 0.08;
         
-        this.player.action();
+        player.update();
         
 	    if ( mixers.length > 0 ) {
             for ( var i = 0; i < mixers.length; i ++ ) {
@@ -163,7 +166,6 @@ var animElement = {
 function CloneElemntFromPortal( el ){
     
     RecoveryPoint = scene.getObjectByName( 'Empty' );
-    console.log(RecoveryPoint);
     
     Playclone = el.clone();
     
@@ -177,7 +179,9 @@ function CloneElemntFromPortal( el ){
     Playclone.position.set(RecoveryPoint.position.x, el.position.y, RecoveryPoint.position.z);
     Playclone.rotation.y = 90*Math.PI/180;
     
-    scene.add(Playclone);
+    //scene.add(Playclone);
+    
+    return Playclone;
     
     console.log(Playclone);
     
@@ -193,36 +197,36 @@ document.addEventListener("keyup", keyUpHandler, false);
 
 function keyDownHandler(e) {
     if(e.keyCode == 87)  { // w
-        animElement.player.move.go = true;
+        player.move.go = true;
 
     }
     else if(e.keyCode == 83) { // s
-        animElement.player.move.back = true;
+        player.move.back = true;
     }
     
     else if(e.keyCode == 68) { // d
-        animElement.player.move.left = true;
+        player.move.left = true;
     }
     
     else if(e.keyCode == 65) { // a
-        animElement.player.move.right = true;
+        player.move.right = true;
     }
 }
 
 function keyUpHandler(e) {
     if(e.keyCode == 87) { // w
-        animElement.player.move.go = false;
+        player.move.go = false;
     }
     else if(e.keyCode == 83) { // s 
-        animElement.player.move.back = false;    
+        player.move.back = false;    
 
     }
     else if(e.keyCode == 68) { // d
-        animElement.player.move.left = false;
+        player.move.left = false;
     }
     
     else if(e.keyCode == 65) { // a
-        animElement.player.move.right = false;
+        player.move.right = false;
     }
 }
 
@@ -236,7 +240,7 @@ manager.onLoad = function () {
     scene.add(Player);
     
     // Определяем персонажа 
-    animElement.player.obj = Player;
+    player.obj = Player;
     
     
     
