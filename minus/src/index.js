@@ -1,3 +1,5 @@
+import {Game, Player } from "./engine.js"; 
+
 var game = new Game('canvas', 0.6);
 var lvl = [
     [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
