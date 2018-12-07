@@ -18,6 +18,18 @@ function Game(id, size, width, height) {
         'x': '#70bc77'
     };
 
+    this.lvlOriginal = [[' ']];
+    this.lvl = [[' ']]; 
+    this.startLvl = function( map ){
+        this.lvlOriginal = map.slice();
+        this.lvl = map;
+    }
+
+    this.restartLvl = function(){
+        this.lvl = this.lvlOriginal;
+        console.log('restart', this.lvlOriginal);
+    }
+
     this.creaveLvl = function (map) {
         var data = {
             type: 'player'
@@ -32,9 +44,16 @@ function Game(id, size, width, height) {
 
     }
 
-    this.drawEl = function (x, y, mtl, txt) {
+    this.drawEl = function (x, y, mtl, txt, player) {
         this.ctx.beginPath();
-        this.ctx.fillStyle = mtl.bgColor;
+        
+        if(player === true ){
+            console.log('player');
+            this.ctx.fillStyle = 'red';
+        } else {
+            this.ctx.fillStyle = mtl.bgColor;
+        }
+        
         var sizeGrid = this.s_width / this.lemMap;
         this.ctx.fillRect(y * sizeGrid + (this.padding * 4.5), x * sizeGrid + (this.padding * 4.5), sizeGrid * this.padding, sizeGrid * this.padding);
 
@@ -67,6 +86,10 @@ function Game(id, size, width, height) {
                     txt.t = map[i][g];
                 }
 
+                if(isNaN(map[i][g])){
+                    console.log('Игрок');
+                }
+
                 this.drawEl(i, g, mtl, txt);
             }
         }
@@ -75,13 +98,14 @@ function Game(id, size, width, height) {
 }
 
 function Player() {
-    this.hp = 9;
+    this.hp = 2;
     this.face = '#';
     this.pos = {
         x: 0,
         y: 0
     }
     this.update = function (map) {
+        console.log(map);
         map[this.pos.y][this.pos.x] = this.hp;
     }
 
