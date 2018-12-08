@@ -14,3 +14,7 @@ body {
     align-items: center;
 
 }
+
+canvas {
+    border:1px solid;
+}

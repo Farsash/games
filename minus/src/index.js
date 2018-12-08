@@ -1,30 +1,17 @@
-import { Game } from "./game.js"; 
+import { drawSetting, levels } from "./lvl";
+import Game from "./game.js"; 
+import DrawSetting from "./other.js"; 
+import Player from "./player"; 
 
-//var game = new Game();
+var drw_setting = new DrawSetting( drawSetting );
+drw_setting.update();
 
-var drawSetting = {
-    'p': 'player',
-    ' ': 'place'
-}
+var game = new Game( levels, drw_setting );
+game.start();
+game.update();
 
+console.log(Player);
 
-for (var key in drawSetting ) {
-    
-    console.log( key );
-}
-
-
-var lvl = [
-    ['p', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', ' ', '1', ' ', '8', ' ', ' '],
-    [' ', ' ', '3', '4', '4', '1', '5', ' ', ' ', ' '],
-    [' ', ' ', '8', '1', '3', '8', '5', ' ', ' ', ' '],
-    [' ', '1', '2', '9', 'x', '5', '4', ' ', '8', ' '],
-    [' ', ' ', '3', '3', '1', '8', '3', ' ', ' ', ' '],
-    [' ', ' ', '5', '5', '9', '7', '9', ' ', ' ', ' '],
-    [' ', ' ', '8', '4', '4', '8', '9', ' ', ' ', ' '],
-    ['1', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-];
-
-//game.start(lvl);
+game.lvl[0][1] = {type: "player", bg: "blue"};
+game.update();
+console.log(game.lvl);

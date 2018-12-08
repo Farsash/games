@@ -1,12 +1,22 @@
-function Game(){
+import RenderCanvas from "./render.js";
 
-    this.map = [];
+function Game( maps, setting ){
+
+    this.level = 0;
+    this.maps = maps;
     this.lvl = {};
-    this.setting = {};
+    this.setting = setting;
+    this.render = new RenderCanvas();
 
-    this.start = function( map ){
+    this.update = function(){
 
-        //CreateLvl( map, this.setting );
+        this.render.update( this.lvl );
+
+    };
+
+    this.start = function(){
+
+        this.lvl = CreateLvl( this.maps[this.level], this.setting );
 
     };
 
@@ -17,25 +27,51 @@ function Game(){
     this.LvlUp = function(){
 
 
-    }
+    };
 
 }
 
 function CreateLvl( map, settng ){
 
-    var lvl = [];
+    var lvl_y = [];
     
     for (var i = 0; i < map.length; i++) {
+        var lvl_x = [];
         for (var g = 0; g < map[i].length; g++) {
-                /*
-            var el = {}
-            for (var map[i][g] in menu) {
-                console.log('');
-            }
-            */
+
+            var el = Lvl_setting( map[i][g], settng.setting, settng.lenght );
+
+            lvl_x.push(el);
 
         }
+        lvl_y.push(lvl_x);
     }
+
+    return lvl_y;
+
+}
+
+function Lvl_setting( map, obj, obj_lenght ){
+
+    var st = 0;
+    var el = {};
+    var flag = false;
+            
+    for (var key in obj ) {
+
+        if ( key === map ){
+            el = obj[key]
+            flag = true;
+        }
+
+        st++;
+        if (st === obj_lenght && flag === false){
+            el = obj['num'];
+        }
+
+    }
+
+    return el;
 
 }
 
