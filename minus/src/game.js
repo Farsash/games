@@ -22,6 +22,9 @@ function Game( maps, setting ){
 
     this.restart = function(){
 
+        this.start();
+        this.update();
+
     };
 
     this.LvlUp = function(){
@@ -40,13 +43,15 @@ function CreateLvl( map, settng ){
         for (var g = 0; g < map[i].length; g++) {
 
             var el = Lvl_setting( map[i][g], settng.setting, settng.lenght );
-
-            lvl_x.push(el);
+            // Костыль
+            var copy = Object.assign({}, el);
+            lvl_x.push(copy);
+            console.log(g, el);
 
         }
         lvl_y.push(lvl_x);
     }
-
+    
     return lvl_y;
 
 }
@@ -67,9 +72,13 @@ function Lvl_setting( map, obj, obj_lenght ){
         st++;
         if (st === obj_lenght && flag === false){
             el = obj['num'];
+            el.txt = map;
+            //console.log(el.txt);
         }
 
     }
+
+    
 
     return el;
 

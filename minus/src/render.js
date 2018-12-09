@@ -15,29 +15,28 @@ function RenderCanvas(){
     this.lemMap = 10;
 
     this.drawEl = function ( x, y, data ) {
-        console.log('Start Draw');
+
         this.ctx.beginPath();
         
         this.ctx.fillStyle = data.bg;
         
         var sizeGrid = this.s_width / this.lemMap;
         this.ctx.fillRect(y * sizeGrid + (this.padding * 4.5), x * sizeGrid + (this.padding * 4.5), sizeGrid * this.padding, sizeGrid * this.padding);
-        /*
-        if (txt != false) {
+       
+        if (data.txt){
 
             this.ctx.font = sizeGrid / 1.5 + 'px ' + "Arial";
-            this.ctx.fillStyle = '#2b2b2b';
+            this.ctx.fillStyle = data.txt_bg;
             var xt = y * sizeGrid + this.lemMap;
             var yt = x * sizeGrid + this.lemMap;
-            this.ctx.fillText(txt.t, xt, yt + (sizeGrid / 2));
+            this.ctx.fillText( data.txt, xt, yt + (sizeGrid / 2));
 
         }
-        */
 
     }
 
     this.update = function( lvl ){
-        console.log(lvl);
+        this.ctx.clearRect(0, 0, this.c.width, this.c.height);
         this.lvl = lvl;
         
         for (var i = 0; i < this.lvl.length; i++) {
