@@ -32,6 +32,24 @@ function Player( lvl, dr_setting ){
         }
     }
 
+    this.collision = function (){
+        
+        if( lvl[this.pos.x][this.pos.y].type === 'num' ){
+            this.hp -= lvl[this.pos.x][this.pos.y].txt;
+        }
+
+        this.hpInfo();
+
+    }
+
+    this.hpInfo = function(){
+
+        if (this.hp < 0 || this.hp === 0){
+            alert('Конец игры');
+        }
+
+    }
+
 }
 
 export default Player;

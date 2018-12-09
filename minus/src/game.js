@@ -46,7 +46,7 @@ function CreateLvl( map, settng ){
             // Костыль
             var copy = Object.assign({}, el);
             lvl_x.push(copy);
-            console.log(g, el);
+            
 
         }
         lvl_y.push(lvl_x);

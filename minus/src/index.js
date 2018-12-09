@@ -4,13 +4,15 @@ import DrawSetting from "./other.js";
 import Player from "./player"; 
 
 var drw_setting = new DrawSetting( drawSetting );
-drw_setting.update();
+    drw_setting.update();
 
 var game = new Game( levels, drw_setting );
-game.start();
-game.update();
+    game.start();
 
 var player = new Player( game.lvl, drw_setting );
+    player.update();
+    game.update();
+
 
 
 document.addEventListener("keydown", Move, false);
@@ -37,7 +39,7 @@ function Move(e) {
     } else {
 
     }
-
+    player.collision();
     player.update();
     game.update();
 
