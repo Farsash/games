@@ -3,7 +3,8 @@ function Player( lvl, dr_setting ){
     this.hp = 9;
     this.face = 'p';
     this.data = dr_setting;
-    this.pos = { x: 1, y: 0 }
+    this.defoultPos = { x: 0, y: 0 };
+    this.pos = { x: 0, y: 0 };
     this.lvl = lvl;
     this.update = function(){
 
@@ -45,7 +46,7 @@ function Player( lvl, dr_setting ){
     this.hpInfo = function(){
 
         if (this.hp < 0 || this.hp === 0){
-            alert('Конец игры');
+            //alert('Конец игры');
         }
 
     }

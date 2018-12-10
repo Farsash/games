@@ -2,6 +2,7 @@ import { drawSetting, levels } from "./lvl";
 import Game from "./game.js"; 
 import DrawSetting from "./other.js"; 
 import Player from "./player"; 
+import Engine from "./engine"; 
 
 var drw_setting = new DrawSetting( drawSetting );
     drw_setting.update();
@@ -12,6 +13,8 @@ var game = new Game( levels, drw_setting );
 var player = new Player( game.lvl, drw_setting );
     player.update();
     game.update();
+
+var engine = new Engine( player, game );    
 
 
 
@@ -39,8 +42,10 @@ function Move(e) {
     } else {
 
     }
+ 
     player.collision();
     player.update();
+    engine.update();
     game.update();
 
 
