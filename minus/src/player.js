@@ -6,13 +6,15 @@ function Player( lvl, dr_setting ){
     this.defoultPos = { x: 0, y: 0 };
     this.pos = { x: 0, y: 0 };
     this.lvl = lvl;
-    this.update = function(){
 
+
+    this.update = function(){
+        //console.log(this.d_lvl);
         var x = this.pos.x;
         var y = this.pos.y;
         var el = this.data.setting[this.face];
         el.txt = this.hp;
-        this.lvl[x][y] = el;
+        this.lvl[y][x] = el;
 
     }
 
@@ -20,7 +22,7 @@ function Player( lvl, dr_setting ){
 
         var x = this.pos.x;
         var y = this.pos.y;
-        this.lvl[x][y] = this.data.setting[' '];
+        this.lvl[y][x] = this.data.setting[' '];
 
     }
 
@@ -35,20 +37,9 @@ function Player( lvl, dr_setting ){
 
     this.collision = function (){
         
-        if( lvl[this.pos.x][this.pos.y].type === 'num' ){
-            this.hp -= lvl[this.pos.x][this.pos.y].txt;
+        if( lvl[this.pos.y][this.pos.x].type === 'num' ){
+           this.hp -= lvl[this.pos.y][this.pos.x].txt;
         }
-
-        this.hpInfo();
-
-    }
-
-    this.hpInfo = function(){
-
-        if (this.hp < 0 || this.hp === 0){
-            //alert('Конец игры');
-        }
-
     }
 
 }

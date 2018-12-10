@@ -1,3 +1,4 @@
+import array from "lodash/array";
 import { drawSetting, levels } from "./lvl";
 import Game from "./game.js"; 
 import DrawSetting from "./other.js"; 
@@ -10,14 +11,27 @@ var drw_setting = new DrawSetting( drawSetting );
 var game = new Game( levels, drw_setting );
     game.start();
 
-var player = new Player( game.lvl, drw_setting );
+var player;
+    player = new Player( game.lvl, drw_setting );
     player.update();
     game.update();
 
-var engine = new Engine( player, game );    
+//var engine = new Engine( player, game );    
 
+var eventsTrigget = {
+    restart: function(){
+        console.log('dssd');
+        game.restart();
+        player = new Player( game.lvl, drw_setting );
+    },
+    'lvlUp': function(){
+        game.restart();
+        player = new Player( game.lvl, drw_setting );
+    },
+    'false': 1
+}
 
-
+ 
 document.addEventListener("keydown", Move, false);
 
 function Move(e) {
@@ -43,10 +57,20 @@ function Move(e) {
 
     }
  
-    player.collision();
+    var collision = player.collision(); 
+    
+    if ( player.lvl[player.pos.x][player.pos.y].type === 'fin' ){
+        game.LvlUp();
+        player = new Player( game.lvl, drw_setting );
+    } else if( player.hp === 0 || player.hp < 0 ){
+        game.restart();
+        player = new Player( game.lvl, drw_setting );
+    }
+
+ 
+     
+    //console.log(game.lvl2);
+
     player.update();
-    engine.update();
     game.update();
-
-
 }

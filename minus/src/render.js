@@ -27,9 +27,9 @@ function RenderCanvas(){
 
             this.ctx.font = sizeGrid / 1.5 + 'px ' + "Arial";
             this.ctx.fillStyle = data.txt_bg;
-            var xt = y * sizeGrid + this.lemMap;
-            var yt = x * sizeGrid + this.lemMap;
-            this.ctx.fillText( data.txt, xt, yt + (sizeGrid / 2));
+            var xt = x * sizeGrid + this.lemMap;
+            var yt = y * sizeGrid + this.lemMap;
+            this.ctx.fillText( data.txt, yt, xt + (sizeGrid / 2));
 
         }
 
@@ -41,7 +41,7 @@ function RenderCanvas(){
         
         for (var i = 0; i < this.lvl.length; i++) {
             for (var g = 0; g < this.lvl[i].length; g++) {
-                this.drawEl(g, i, this.lvl[i][g] );
+                this.drawEl(i, g, this.lvl[i][g] );
             }
         }
        

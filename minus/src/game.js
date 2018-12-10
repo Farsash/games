@@ -1,10 +1,12 @@
 import RenderCanvas from "./render.js";
+import { throws } from "assert";
 
 function Game( maps, setting ){
 
     this.level = 0;
     this.maps = maps;
     this.lvl = {};
+    this.lvl2;
     this.setting = setting;
     this.render = new RenderCanvas();
 
@@ -17,6 +19,7 @@ function Game( maps, setting ){
     this.start = function(){
 
         this.lvl = CreateLvl( this.maps[this.level], this.setting );
+        this.lvl2 = CreateLvl( this.maps[this.level], this.setting );
 
     };
 
@@ -28,6 +31,12 @@ function Game( maps, setting ){
     };
 
     this.LvlUp = function(){
+
+        console.log('lvlUp');
+
+        this.level += 1;
+        this.start();
+        this.update();
 
 
     };
