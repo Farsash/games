@@ -14,6 +14,6 @@ function DrawSetting( setting ){
 
     };
 
-} 
+}
 
 export default DrawSetting;

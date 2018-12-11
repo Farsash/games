@@ -1,9 +1,9 @@
 var drawSetting = {
-    'p': { type: 'player', bg: 'blue', txt_bg:'#2b2b2b' },
-    ' ': { type: 'place', bg: '#97cef6' },
+    'p': { type: 'player', bg: '#00ff00', txt_bg:'#ff0000' },
+    ' ': { type: 'place', bg: '#e4e2e2' },
     '_': { type: 'place', bg: '#458dc2' },    
     'x': { type: 'fin', bg: '#70bc77' },
-    'num': { type: 'num', bg: '#eaf2f2', txt_bg:'#2b2b2b' },
+    'num': { type: 'num', bg: '#c6c6c6', txt_bg:'#2b2b2b' },
 }
 
 var levels = [];
