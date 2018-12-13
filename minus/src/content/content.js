@@ -2,7 +2,12 @@ let content = {
     'start': {
         '_title': 'Минус',
         '_text': 'Привет мир',
-        '_bt': '<a href="#" onclick="uclicked()"> Rkbr </a>'
+        '_bt': '<a href="#" onclick="run()"> Rkbr </a>'
+    },
+    'next': {
+        '_title': 'Та держать!',
+        '_text': '',
+        '_bt': '<a href="#" onclick="next()"> Дальше </a>'
     },
     'clear': {
         '_title': '',

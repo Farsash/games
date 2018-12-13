@@ -44,10 +44,13 @@ function RenderCanvas(){
                 this.drawEl(i, g, this.lvl[i][g] );
             }
         }
-       
-       
-
     }
+
+    this.clear = function(){
+        console.log('sd');
+        this.ctx.clearRect(0, 0, this.c.width, this.c.height);
+        this.ctx.beginPath();
+    };
 
 
 }

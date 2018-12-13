@@ -1,14 +1,20 @@
 import RenderCanvas from "./render.js";
 import Player from "./player.js";
+import Html from "./content/html.js";
 
 function Game( maps, setting ){
 
     this.level = 0;
     this.maps = maps;
+    this.html = new Html();
     this.lvl;
     this.setting = setting;
     this.render = new RenderCanvas();
     this.player = new Player();
+
+    this.content = function( name ){
+        this.html.update( name );
+    };
 
     this.start = function(){
         this.lvl = CreateLvl( this.maps[this.level], this.setting );
@@ -84,12 +90,9 @@ function Game( maps, setting ){
     };
 
     this.LvlUp = function(){
-
-        console.log('lvlUp');
-
+        this.html.update('next');
         this.level += 1;
-        this.start();
-
+        this.render.clear();
 
     };
 
@@ -99,13 +102,13 @@ function CreateLvl( map, settng ){
 
     var lvl_y = [];
     
-    for (var i = 0; i < map.length; i++) {
-        var lvl_x = [];
-        for (var g = 0; g < map[i].length; g++) {
+    for (let i = 0; i < map.length; i++) {
+        let lvl_x = [];
+        for (let g = 0; g < map[i].length; g++) {
 
-            var el = Lvl_setting( map[i][g], settng.setting, settng.lenght );
+            let el = Lvl_setting( map[i][g], settng.setting, settng.lenght );
             // Костыль
-            var copy = Object.assign({}, el);
+            let copy = Object.assign({}, el);
             lvl_x.push(copy);
             
 
@@ -119,11 +122,11 @@ function CreateLvl( map, settng ){
 
 function Lvl_setting( map, obj, obj_lenght ){
 
-    var st = 0;
-    var el = {};
-    var flag = false;
+    let st = 0;
+    let el = {};
+    let flag = false;
             
-    for (var key in obj ) {
+    for (let key in obj ) {
 
         if ( key === map ){
             el = obj[key]

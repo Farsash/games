@@ -8,22 +8,24 @@ var drw_setting = new DrawSetting( drawSetting );
 
 var game = new Game( levels, drw_setting );
 
-var html = new Html();
-
 Start();
 
 function Start(){
-    html.update('start');
+    game.html.update('start');
 }
 
 
 
 
-window.uclicked = function() {
+window.run = function() {
     document.addEventListener("keydown", Move, false);   
-    html.clear();
+    game.html.clear();
     game.start();
-}
+};
+
+window.next = function() { 
+   
+};
 
 
 
