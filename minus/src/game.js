@@ -12,15 +12,14 @@ function Game( maps, setting ){
     this.render = new RenderCanvas();
     this.player = new Player();
 
-    this.content = function( name ){
-        this.html.update( name );
-    };
-
     this.start = function(){
-        this.lvl = CreateLvl( this.maps[this.level], this.setting );
-        this.player.pos = { x: 0, y: 0 };
+        this.createLvl();
+        console.log(this.lvl);
+        console.log(this.lvl[3][4]);
+        this.player.pos.x = 0;
+        this.player.pos.y = 0;
         this.player.hp = 9;
-        var el = this.setting.setting['p'];
+        let el = this.setting.setting['p'];
         el.txt = this.player.hp;
         this.lvl[this.player.pos.y][this.player.pos.x] = el;
 
@@ -29,8 +28,7 @@ function Game( maps, setting ){
 
     this.move = function( e ){
 
-        var savePosition = { x: this.player.pos.x, y: this.player.pos.y};
-
+        let savePosition = { x: this.player.pos.x, y: this.player.pos.y};
  
         this.player.move(e);
         
@@ -77,10 +75,9 @@ function Game( maps, setting ){
         if (el.num){
             var d = this.setting.setting[' '];
             this.lvl[y][x] = d;
-        }else {
+        } else {
             this.lvl[y][x] = this.setting.setting[' '];
-        }
-        
+        }        
     }
 
     this.restart = function(){
@@ -96,11 +93,42 @@ function Game( maps, setting ){
 
     };
 
-}
+};
+
+Game.prototype.content = function( name ){
+    this.html.update( name );
+};
+
+Game.prototype.createLvl = function( name ){
+
+    let lvl_y = [];    
+    let map = this.maps[this.level];
+
+    for (let i = 0; i < map.length; i++) {
+
+        let lvl_x = [];
+
+        for (let g = 0; g < map[i].length; g++) {
+
+            let el = Lvl_setting( map[i][g], this.setting.setting, this.setting.lenght );
+            // Костыль
+            let copy = Object.assign({}, el);
+            lvl_x.push(copy);
+
+        }
+
+        lvl_y.push(lvl_x);
+
+    }
+
+    this.lvl = lvl_y;
+
+};
 
 function CreateLvl( map, settng ){
 
-    var lvl_y = [];
+    let lvl_y = [];
+    
     
     for (let i = 0; i < map.length; i++) {
         let lvl_x = [];
