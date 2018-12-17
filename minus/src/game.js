@@ -14,8 +14,10 @@ function Game( maps, setting ){
 
     this.start = function(){
         this.createLvl();
+        /*
         console.log(this.lvl);
         console.log(this.lvl[3][4]);
+        */
         this.player.pos.x = 0;
         this.player.pos.y = 0;
         this.player.hp = 9;
@@ -28,8 +30,12 @@ function Game( maps, setting ){
 
     this.move = function( e ){
 
+        console.log('move');
+
         let savePosition = { x: this.player.pos.x, y: this.player.pos.y};
- 
+
+        this.clear( savePosition );
+
         this.player.move(e);
         
         var wall = this.wall();
@@ -52,9 +58,9 @@ function Game( maps, setting ){
             this.start();
         }
 
-        this.clear( savePosition );
-
         this.render.update( this.lvl );
+
+        console.log('move end');
 
     };
 
@@ -73,7 +79,7 @@ function Game( maps, setting ){
         var x = el.x;
         var y = el.y;
         if (el.num){
-            var d = this.setting.setting[' '];
+            var d = this.setting.setting['_'];
             this.lvl[y][x] = d;
         } else {
             this.lvl[y][x] = this.setting.setting[' '];

@@ -6,8 +6,11 @@ function Player(){
     this.pos = { x: 0, y: 0 };
 
     this.data = function(){
-        return { type: 'player', bg: '#00ff00', txt_bg:'#ff0000', txt: this.hp }
+
+        return { type: 'player', bg: '#00ff00', txt_bg: '#ff0000', txt: this.hp }
+
     }
+
 
     this.move = function( e ){
 
@@ -22,7 +25,6 @@ function Player(){
         }
 
     }
-
 
 }
 

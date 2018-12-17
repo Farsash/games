@@ -36,6 +36,7 @@ function RenderCanvas(){
     }
 
     this.update = function( lvl ){
+        console.log('render');
         this.ctx.clearRect(0, 0, this.c.width, this.c.height);
         this.lvl = lvl;
         
@@ -47,9 +48,9 @@ function RenderCanvas(){
     }
 
     this.clear = function(){
-        console.log('sd');
+        console.log('clear');
         this.ctx.clearRect(0, 0, this.c.width, this.c.height);
-        this.ctx.beginPath();
+        //this.ctx.beginPath();
     };
 
 
