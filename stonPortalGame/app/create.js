@@ -31,6 +31,12 @@ var setting = {
     }
 };
 
+// ==========
+
+let debugMod = true;
+
+// =========
+
 
 
 

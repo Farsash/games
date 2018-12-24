@@ -131,7 +131,7 @@ var playermat = new THREE.ShaderMaterial({
             
             vec4 img = texture2D(img, vUv); // Текстура
 
-            if( vPosition.z > portal.z - 25.5 && vPosition.z < portal.z + 60.5 && vPosition.x > portal.x - 1.5 && vPosition.x < portal.x + 30.5 && run == 1.0) {
+            if( vPosition.x > portal.x - 1.5 && run == 1.0) {
                 discard;
             }
 

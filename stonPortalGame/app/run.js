@@ -3,6 +3,9 @@ geometry_line.vertices.push(new THREE.Vector3( 0, 0, 0) );
 geometry_line.vertices.push(new THREE.Vector3( 0, 80, 50) );
 
 var line = new THREE.Line( geometry_line, new THREE.LineBasicMaterial( { color: 0x0000ff } ) );
+if (!debugMod){
+    line.layers.mask = 2;
+}
 scene.add(line);
 
 var Playclone;
@@ -71,6 +74,7 @@ var player = {
         this.obj = this.clone;
         
         this.clone = false;
+        
         playermat.uniforms.run.value = 0.0;
         
     },
@@ -104,17 +108,38 @@ var player = {
             
             if ( intersects[ 0 ].distance < 10 ){
                 
-                if ( intersects[ 0 ].object.name === '_portal'){
+                console.log(intersects[ 0 ].object.name);
+                
+                if ( intersects[ 0 ].object.name === '_portal_remove' ){
                     
-                    if ( this.clone === false ){
+                    if (this.clone){
+                        this.removeClonePlayer();
+                    }
+                    
+                } else if( intersects[ 0 ].object.name === '_portal_no' ){
+                    
+                    scene.remove(this.clone);
+                    this.clone = false
+                    
+                    
+                } else if( intersects[ 0 ].object.name === '_port_clone'){
+                    
+                    playermat.uniforms.run.value = 1.0;
+                                        
+                    if ( !this.clone ){
                         
-                        playermat.uniforms.run.value = 1.0;
+                        console.error('Копия создана');
+                        
                         this.clone = true;
                         this.clone = CloneElemntFromPortal( this.obj );
                         scene.add(this.clone);
-                        this.removeClonePlayer();
+                       
+                        
                         
                     }
+                        
+                    
+                    
                 } else {
                     
                    this.move.collision = true;    
@@ -169,21 +194,26 @@ function CloneElemntFromPortal( el ){
     
     Playclone = el.clone();
     
-    var geometry = new THREE.BoxBufferGeometry( 20, 50, 50 );
+    var geometry = new THREE.PlaneBufferGeometry( 20, 50, 50 );
     var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
     var cube = new THREE.Mesh( geometry, material );
-    cube.position.set(RecoveryPoint.position.x, el.position.y, RecoveryPoint.position.z);
-    cube.rotation.y = -90*Math.PI/180;
-    scene.add( cube );
+    cube.position.set(-132.669, 29.195, 71.822);
+    cube.rotation.x = 40.32*Math.PI/180;
+    //cube.rotation.y = 40.32*Math.PI/180;
+    scene.add(cube);
     
-    Playclone.position.set(RecoveryPoint.position.x, el.position.y, RecoveryPoint.position.z);
-    Playclone.rotation.y = 90*Math.PI/180;
+    console.log(cube);
     
-    //scene.add(Playclone);
+    Playclone.position.set(cube.position.x, cube.position.y, cube.position.z);
+    
+      Playclone.rotation.y = cube.rotation.x;
+//    Playclone.rotation.y = cube.rotation.y;
+//    
+    
+    Playclone.matrix = cube.matrix
+    scene.add(Playclone);
     
     return Playclone;
-    
-    console.log(Playclone);
     
 }
 
