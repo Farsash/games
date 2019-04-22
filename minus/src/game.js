@@ -14,10 +14,6 @@ function Game( maps, setting ){
 
     this.start = function(){
         this.createLvl();
-        /*
-        console.log(this.lvl);
-        console.log(this.lvl[3][4]);
-        */
         this.player.pos.x = 0;
         this.player.pos.y = 0;
         this.player.hp = 9;
