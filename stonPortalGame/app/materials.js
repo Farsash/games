@@ -103,7 +103,9 @@ var playermat = new THREE.ShaderMaterial({
     uniforms: { 
         img: { type: "t", value: T_loader.load("res/player.png") },
         time: { type: "f", value: 0.0 },
-        portal: { type: "v3", value: new THREE.Vector3( 0, 0, 20.0 ) } 
+        portal: { type: "v3", value: new THREE.Vector3( 0, 0, 20.0 ) },
+        run: { type: "f", value: 0.0 }
+        
     },
     vertexShader:`
         varying vec2 vUv;
@@ -119,7 +121,9 @@ var playermat = new THREE.ShaderMaterial({
         varying vec2 vUv;
         uniform sampler2D img;
         uniform float time;
+        uniform float run;
         uniform vec3 portal;
+
 
         varying vec3 vPosition;
 
@@ -127,13 +131,13 @@ var playermat = new THREE.ShaderMaterial({
             
             vec4 img = texture2D(img, vUv); // Текстура
 
-            if(vPosition.z > portal.z - 8.5) {
+            if( vPosition.x > portal.x - 1.5 && run == 1.0) {
                 discard;
             }
 
-           if (gl_FrontFacing){          
+            if (gl_FrontFacing){          
 
-                if(vPosition.z > portal.z - 10.5) {
+                if( vPosition.z > portal.z - 20.5 && vPosition.z < portal.z + 60.5 && vPosition.x > portal.x - 10.5 && vPosition.x < portal.x + 30.5 && run == 1.0) {
 
                    gl_FragColor = mix(vec4(0.910,0.469,1.000,1.),img, 0.5);
 

@@ -9,6 +9,12 @@ var clock = new THREE.Clock();
 var FBXloader = new THREE.FBXLoader(manager);
 var T_loader = new THREE.TextureLoader(manager);
 
+var raycaster = new THREE.Raycaster();
+
+var RecoveryPoint;
+
+var collisionObjects = [];
+
 var setting = {
     camera: {
         x: 350,
@@ -24,6 +30,13 @@ var setting = {
         path:'res/'
     }
 };
+
+// ==========
+
+let debugMod = false;
+
+// =========
+
 
 
 
